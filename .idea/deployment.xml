@@ -5,7 +5,7 @@
       <paths name="pi@192.168.1.69:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_388" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/pi/Desktop/moodspotter" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
