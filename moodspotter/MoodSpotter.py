@@ -19,7 +19,8 @@ def fallback_existing_image():
     img_bytes = MoodCamera.get_image_bytes(directory)
     if img_bytes:
         print("Using existing image")
-        moodDetector.ms_get_image_data(img_bytes)
+        mood = moodDetector.ms_get_image_data(img_bytes)
+        spotifyConnector.browse_for_mood(moodDetector.currentMood)
     else:
         print("No existing image. Stopping immediately.")
 

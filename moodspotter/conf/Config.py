@@ -18,4 +18,5 @@ spotify_auth_url = "https://accounts.spotify.com/api/token"
 spotify_auth_header = {"Content-Type": "application/x-www-form-urlencoded",
                        "Authorization": "Basic " + base64.b64encode(spotify_id + ":" + spotify_secret)}
 spotify_auth_params = {"grant_type": "client_credentials"}
+spotify_browse_url = "https://api.spotify.com/v1/recommendations"
 
