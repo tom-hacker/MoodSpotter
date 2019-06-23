@@ -26,6 +26,5 @@ def get_image_bytes(directory):
         return False
     img = open(directory + imgName, "rb")
     f = img.read()
-    b = bytearray(f)
     img.close()
-    return b
+    return f

@@ -1,9 +1,11 @@
 import MoodCamera
+import MoodDetector
 
 directory = "/home/pi/Desktop/images"
 print("Moodspotter is now running")
 
 cameraExists = MoodCamera.take_photo("directory")
+moodDetector = MoodDetector.MoodDetector()
 
 
 def main_loop():
@@ -15,7 +17,7 @@ def fallback_existing_image():
     img_bytes = MoodCamera.get_image_bytes(directory)
     if img_bytes:
         print("Using existing image")
-        # TODO
+        moodDetector.ms_get_image_data(img_bytes)
     else:
         print("No existing image. Stopping immediately.")
 
