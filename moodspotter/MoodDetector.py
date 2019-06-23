@@ -2,16 +2,12 @@ import requests
 from requests import ConnectionError
 import json
 from FaceMood import FaceMood
-
+from config.Config import ms_cognitive_url, ms_cognitive_headers_byteimg, ms_cognitive_params
+import ErrorHandler
 try:
     from types import SimpleNamespace as Namespace
 except ImportError:
     from argparse import Namespace
-
-url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect"
-params = {'returnFaceId': 'true',
-          'returnFaceAttributes': 'age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise'}
-headers = {'Content-Type': 'application/octet-stream', 'Ocp-Apim-Subscription-Key': '1c607603f06646f6befb6cf1a4754a8d'}
 
 
 class MoodDetector:
@@ -23,7 +19,10 @@ class MoodDetector:
 
     def ms_get_image_data(self, byteImage):
         try:
-            r = requests.post(url, params=params, headers=headers, data=byteImage)
+            r = requests.post(ms_cognitive_url,
+                              params=ms_cognitive_params,
+                              headers=ms_cognitive_headers_byteimg,
+                              data=byteImage)
             faces = json.loads(r.text, object_hook=lambda d: Namespace(**d))
 
             if r.status_code == 200 and len(faces) > 0:
@@ -33,8 +32,7 @@ class MoodDetector:
                 self.currentMood.divide_all_by(len(faces))
                 print(self.currentMood)
             else:
-                print("Error code ", r.status_code)
-                # TODO handle error codes
+                ErrorHandler.handle_error_response(r, "MS Cognitive Services")
 
         except ConnectionError:
             # TODO connection didn't work
