@@ -1,3 +1,4 @@
+import base64
 try:
     from SecretConfig import ms_cognitive_key, spotify_id, spotify_secret
 except ImportError:
@@ -12,6 +13,9 @@ ms_cognitive_headers_byteimg = {'Content-Type': "application/octet-stream",
 ms_cognitive_params = {'returnFaceId': 'true',
                        'returnFaceAttributes': 'age,gender,smile,facialHair,glasses,emotion,hair,makeup,accessories'}
 
-spotify_client_id = spotify_id
-spotify_client_secret = spotify_secret
+
+spotify_auth_url = "https://accounts.spotify.com/api/token"
+spotify_auth_header = {"Content-Type": "application/x-www-form-urlencoded",
+                       "Authorization": "Basic " + base64.b64encode(spotify_id + ":" + spotify_secret)}
+spotify_auth_params = {"grant_type": "client_credentials"}
 

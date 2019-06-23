@@ -1,11 +1,13 @@
 import MoodCamera
 import MoodDetector
+import SpotifyConnector
 
 directory = "/home/pi/Desktop/images"
 print("Moodspotter is now running")
 
 cameraExists = MoodCamera.take_photo("directory")
 moodDetector = MoodDetector.MoodDetector()
+spotifyConnector = SpotifyConnector.SpotifyConnector()
 
 
 def main_loop():
