@@ -2,7 +2,7 @@ import requests
 from requests import ConnectionError
 import json
 from FaceMood import FaceMood
-from config.Config import ms_cognitive_url, ms_cognitive_headers_byteimg, ms_cognitive_params
+from conf.Config import ms_cognitive_url, ms_cognitive_headers_byteimg, ms_cognitive_params
 import ErrorHandler
 try:
     from types import SimpleNamespace as Namespace
