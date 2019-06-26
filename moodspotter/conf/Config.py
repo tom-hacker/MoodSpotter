@@ -20,3 +20,11 @@ spotify_auth_header = {"Content-Type": "application/x-www-form-urlencoded",
 spotify_auth_params = {"grant_type": "client_credentials"}
 spotify_browse_url = "https://api.spotify.com/v1/recommendations"
 
+#happy - pharrell;
+spotify_happy_seeds = ["5b88tNINg4Q4nrRbrCXUmg", ""]
+spotify_sad_seeds = []
+spotify_calm_seeds = []
+spotify_neutral_seeds = []
+spotify_party_seeds = []
+#down in the past - Mando Diao; Without me - Eminem;
+spotify_annoyed_seeds = ["2vx5Dc3Zxtd5yGDlh2pAAz", "7lQ8MOhq6IN2w8EYcFNSUk"]
