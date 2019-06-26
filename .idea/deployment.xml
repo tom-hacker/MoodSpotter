@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="pi@192.168.1.69:22">
+  <component name="PublishConfigData" autoUpload="Always" serverName="pi@192.168.1.211:22">
     <serverData>
-      <paths name="pi@192.168.1.69:22">
+      <paths name="pi@192.168.1.211:22">
         <serverdata>
           <mappings>
             <mapping deploy="/home/pi/Desktop/moodspotter" local="$PROJECT_DIR$" />

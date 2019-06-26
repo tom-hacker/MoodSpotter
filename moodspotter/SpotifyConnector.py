@@ -2,6 +2,11 @@ import requests
 import ErrorHandler
 from conf.Config import spotify_auth_url, spotify_auth_header, spotify_auth_params, spotify_browse_url
 from FaceMood import FaceMood
+import json
+try:
+    from types import SimpleNamespace as Namespace
+except ImportError:
+    from argparse import Namespace
 
 class SpotifyConnector:
     authToken = ""
@@ -27,6 +32,11 @@ class SpotifyConnector:
         r = requests.get(spotify_browse_url,
                          headers=header,
                          params=mood.get_spotify_targets())
-        print(r.status_code)
-        print(r.text)
-        print(r.url)
+
+        if r.status_code == 200:
+            results = json.loads(r.text, object_hook=lambda d: Namespace(**d))
+            for track in results.tracks:
+                print(track.name)
+                print(track.uri)
+                print(track.external_urls)
+                print

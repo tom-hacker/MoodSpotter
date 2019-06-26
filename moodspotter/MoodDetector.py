@@ -31,8 +31,13 @@ class MoodDetector:
                     evaluate_face(face, self.currentMood)
                 self.currentMood.divide_all_by(len(faces))
                 print(self.currentMood)
+                return True
+            elif r.status_code == 200:
+                print("No faces found")
+                return False
             else:
                 ErrorHandler.handle_error_response(r, "MS Cognitive Services")
+                return False
 
         except ConnectionError:
             # TODO connection didn't work

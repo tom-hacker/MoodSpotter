@@ -2,29 +2,43 @@ from picamera import PiCamera, PiCameraError
 from time import sleep
 import os
 
-imgName = "/image.jpg"
+
+class MoodCamera:
+    def __init__(self):
+        pass
+
+    imgName = "/image.jpg"
+    directory = ""
+    camera = ""
+    def init_camera(self, dir):
+        try:
+            self.directory = dir
+            self.camera = PiCamera()
+            self.camera.rotation = 180
+            return self.take_photo()
+        except PiCameraError:
+            print("Error when initializing camera!")
+            return False
 
 
-def take_photo(directory):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    try:
-        camera = PiCamera()
-        camera.rotation = 180
-        camera.start_preview()
-        sleep(5)
-        camera.capture(directory + imgName)
-        camera.stop_preview()
-        return True
-    except PiCameraError:
-        print("There is no camera installed!")
-        return False
+    def take_photo(self):
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+        try:
+            self.camera.start_preview()
+            sleep(5)
+            self.camera.capture(self.directory + self.imgName)
+            self.camera.stop_preview()
+            return True
+        except PiCameraError:
+            print("There is no camera installed!")
+            return False
 
 
-def get_image_bytes(directory):
-    if not os.path.exists(directory + imgName):
-        return False
-    img = open(directory + imgName, "rb")
-    f = img.read()
-    img.close()
-    return f
+    def get_image_bytes(self):
+        if not os.path.exists(self.directory + self.imgName):
+            return False
+        img = open(self.directory + self.imgName, "rb")
+        f = img.read()
+        img.close()
+        return f

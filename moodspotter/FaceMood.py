@@ -10,8 +10,8 @@ target_values = {'target_acousticness': 1.0,
                  #'target_speechiness': 25,         # is target text or song? < .33 music; .33 -> .66 mixed music and speech; > .66 speech only
                  #'target_tempo': 100,              # bpm
                  'target_valence': 1.0,              # positiveness of track
-                 'seed_genres': ['alt_rock'],
-                 'limit': 50
+                 'seed_tracks': ['7JJmb5XwzOO8jgpou264Ml'],
+                 'limit': 5
                  }
 
 
