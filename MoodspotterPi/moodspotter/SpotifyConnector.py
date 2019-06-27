@@ -1,8 +1,11 @@
 import requests
 import ErrorHandler
-from conf.Config import spotify_auth_url, spotify_auth_header, spotify_auth_params, spotify_browse_url
+from conf.Config import spotify_auth_url, spotify_auth_header, spotify_auth_params, spotify_browse_url, \
+    rabbitMq_url, rabbitMq_pw
 from FaceMood import FaceMood
 import json
+import pika
+
 try:
     from types import SimpleNamespace as Namespace
 except ImportError:
@@ -36,7 +39,19 @@ class SpotifyConnector:
         if r.status_code == 200:
             results = json.loads(r.text, object_hook=lambda d: Namespace(**d))
             for track in results.tracks:
+                print(results)
                 print(track.name)
+                self.send_to_rabbit(track.uri)
                 print(track.uri)
                 print(track.external_urls)
                 print
+
+    def send_to_rabbit(self, uri):
+        connection = pika.BlockingConnection(pika.URLParameters(rabbitMq_url))
+        channel = connection.channel()
+        channel.queue_declare(queue='songs')
+        channel.basic_publish(exchange='', routing_key='songs', body=uri)
+        connection.close()
+        print("sent song to rabbit")
+
+

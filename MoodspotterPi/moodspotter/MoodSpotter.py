@@ -16,7 +16,6 @@ def main_loop():
     while True:
         img_bytes = camera.get_image_bytes()
         if moodDetector.ms_get_image_data(img_bytes):
-            mood = moodDetector.currentMood
             spotifyConnector.browse_for_mood(moodDetector.currentMood)
             sleep(30)
         else:
@@ -28,7 +27,7 @@ def fallback_existing_image():
     img_bytes = camera.get_image_bytes()
     if img_bytes:
         print("Using existing image")
-        mood = moodDetector.ms_get_image_data(img_bytes)
+        moodDetector.ms_get_image_data(img_bytes)
         spotifyConnector.browse_for_mood(moodDetector.currentMood)
     else:
         print("No existing image. Stopping immediately.")

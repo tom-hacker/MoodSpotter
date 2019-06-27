@@ -1,3 +1,7 @@
+import random
+from conf.Config import spotify_happy_seeds, spotify_annoyed_seeds, spotify_calm_seeds, spotify_neutral_seeds
+
+
 target_values = {'target_acousticness': 1.0,
                  'target_danceability': 1.0,
                  'target_energy': 1.0,
@@ -10,7 +14,7 @@ target_values = {'target_acousticness': 1.0,
                  #'target_speechiness': 25,         # is target text or song? < .33 music; .33 -> .66 mixed music and speech; > .66 speech only
                  #'target_tempo': 100,              # bpm
                  'target_valence': 1.0,              # positiveness of track
-                 'seed_tracks': ['7JJmb5XwzOO8jgpou264Ml'],
+                 'seed_tracks': [],
                  'limit': 5
                  }
 
@@ -51,7 +55,28 @@ class FaceMood:
 
     def get_spotify_targets(self):
         reset_target_values()
+        self.add_seeds()
+
         target_values['target_energy'] *= self.happiness
         target_values['target_danceability'] *= self.happiness
         target_values['target_liveness'] *= self.happiness
         return target_values
+
+    def add_seeds(self):
+        if self.happiness > .25:
+            seed = random.choice(spotify_happy_seeds)
+            target_values['seed_tracks'].append(seed)
+        if self.contempt > .25 or self.disgust > .25 :
+            seed = random.choice(spotify_annoyed_seeds)
+            target_values['seed_tracks'].append(seed)
+        if self.anger > .25 or self.fear:
+            seed = random.choice(spotify_calm_seeds)
+            target_values['seed_tracks'].append(seed)
+        if self.neutral > .25:
+            seed = random.choice(spotify_neutral_seeds)
+            target_values['seed_tracks'].append(seed)
+        if len(target_values['seed_tracks']) <= 0:
+            seed = random.choice(spotify_neutral_seeds)
+            target_values['seed_tracks'].append(seed)
+
+
