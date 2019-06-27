@@ -53,3 +53,4 @@ def evaluate_face(face, currentMood):
     currentMood.fear += facemood.fear
     currentMood.happiness += facemood.happiness
     currentMood.neutral += facemood.neutral
+    currentMood.sadness += facemood.sadness

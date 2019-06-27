@@ -49,8 +49,10 @@ class SpotifyConnector:
     def send_to_rabbit(self, uri):
         connection = pika.BlockingConnection(pika.URLParameters(rabbitMq_url))
         channel = connection.channel()
+        channel.exchange_declare(exchange='songExchange', exchange_type='direct')
         channel.queue_declare(queue='songs')
-        channel.basic_publish(exchange='', routing_key='songs', body=uri)
+        channel.queue_bind(exchange='songExchange', queue='songs')
+        channel.basic_publish(exchange='songExchange', routing_key='songs', body=uri)
         connection.close()
         print("sent song to rabbit")
 

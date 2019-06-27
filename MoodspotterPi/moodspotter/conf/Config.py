@@ -28,14 +28,20 @@ spotify_happy_seeds = ["5b88tNINg4Q4nrRbrCXUmg", "2K0FpmAfvyqW4sHjBGpIQn", "2Ppr
 #dont worry be happy - bobby mcferrin, viva la vida - coldplay;
                        "5YbgcwHjQhdT1BYQ4rxWlD", "3Fcfwhm8oRrBvBZ8KGhtea"]
 
-#waves - dean lewis;
-spotify_sad_seeds = ["0BfVKJALJjpzNYIQiEgF2G"]
+#waves - dean lewis; someone you loved - lewis capaldi; tears in heaven - eric clapton; everybody hurts - R.E.M;
+spotify_sad_seeds = ["0BfVKJALJjpzNYIQiEgF2G", "7qEHsqek33rTcFNT9PFqLf", "7utRJ4BeYx85khzP3lKoBX", "6PypGyiu0Y2lCDBN1XZEnP",
+#sounds of silence - simon & garfunkel;
+                     "5jZVO2BKMYigxIGVgfRvs3"]
 
-#Mellomaniac - dj shaw; Strawberry seeds - coldplay;
-spotify_calm_seeds = ["7gEky4JRrXUQdImEldIUlT", "4NmcfahJGawtwaMATGgP0L"]
+#Mellomaniac - dj shaw; Strawberry seeds - coldplay; jazz; Please dont go - barcelona; mozart
+spotify_calm_seeds = ["7gEky4JRrXUQdImEldIUlT", "4NmcfahJGawtwaMATGgP0L", "3HfPHK9gTHDtaeJHEH1x2n", "0lRnbYaPtv0A5OezVahO8e", "3k4S8Nya2OdCHpkG9sSNDM"]
 
-#Grace Kelly - mika
-spotify_neutral_seeds = ["2SDx0PooHZI1SQKR0y44bs"]
-spotify_party_seeds = []
-#down in the past - Mando Diao; Without me - Eminem;
-spotify_annoyed_seeds = ["2vx5Dc3Zxtd5yGDlh2pAAz", "7lQ8MOhq6IN2w8EYcFNSUk"]
+#Grace Kelly - mika; paint it, black - stones; sympath. for the devil - stones; black hole sun - soundgarden;
+spotify_neutral_seeds = ["2SDx0PooHZI1SQKR0y44bs", "63T7DJ1AFDD6Bn8VzG6JE8", "1Ud6moTC0KyXMq1Oxfien0", "2EoOZnxNgtmZaD8uUmz2nD",
+#Under the Bridge - RHChili peppers; jazz; Aisha - outlandish
+                         "3d9DChrdc6BOeFsbrZ3Is0", "2QLoxnf8H9MVHdlJt6l3Pe", "7mze3mJmu79AJu8SnS37pS"]
+
+#Sweet but psycho - ava max; Summer Jam - Underdog project
+#spotify_party_seeds = ["25sgk305KZfyuqVBQIahim", "6L54wM12STr1kS8nPjPIaS"]
+#down in the past - Mando Diao; Without me - Eminem; nobody speak - dj shadow; billy talent - red flag;
+spotify_annoyed_seeds = ["2vx5Dc3Zxtd5yGDlh2pAAz", "7lQ8MOhq6IN2w8EYcFNSUk", "2A9rFFPwsnhusCh8ZMBvYY", "2RZWdE8kYPlCAcRUYDeuLC"]
