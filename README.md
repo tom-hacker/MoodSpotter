@@ -35,3 +35,21 @@ Folgende Werte werden dabei ermittelt:
 * sadness
 
 //TODO: Links, example query and response
+
+### Spotify API
+#### Allgemeines
+Spotify bietet viele verschiedene Endpoints zur Nutzung seiner Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
+Mölich sind unter anderem Abfragen zu Liedern, Alben, Interpreten oder auch Nutzern. Auch das externe Steuern von mit Spotify verbundenen Geräten ist möglich. 
+Die Authorisierung erfolgt mittels OAuth2, der manche Endpoints ist auch ohne Login möglich.
+
+#### Genutzte Funktionalität
+MoodSpotter nutzt die den Browse-Endpoint der API. Dieser ermittelt anhand von Seed-Liedern dazu passende Lieder. Zusätzlich können unterschiedliche Lied-Metriken angegeben werden, die die erwarteten Ergebnisse in eine Richtung leiten oder einschränken sollen.
+
+* target_speed:
+* target
+
+Als Antwort liefert Spotify eine durch einen Parameter festgelegte Menge an Liedern (oder weniger, bei restriktiven Abfragen).
+Die Informationen zu den Liedern enthalten unter anderem Name des Liedes, Name des Albums, Interpreten, einen Link zum Starten des Liedes. Für MoodSpotter ist besonders die übermittelte eindeutige URI wichtig, anhand ihrer kann jede andere Anwendung dieses Lied abfragen.
+
+
+ 
