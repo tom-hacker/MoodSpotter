@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/song")
 public class SongResource {
@@ -16,8 +17,9 @@ public class SongResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getNextSongURI() {
-        return rabbitMQClient.getMessage();
+    public Response getNextSongURI() {
+        SongDTO song = new SongDTO(rabbitMQClient.getMessage());
+        return Response.ok(song).build();
     }
 
 }
