@@ -6,6 +6,7 @@ from time import sleep
 directory = "/home/pi/Desktop/images"
 print("Moodspotter is now running")
 
+sleep(10)
 camera = MoodCamera.MoodCamera()
 cameraExists = camera.init_camera(directory)
 moodDetector = MoodDetector.MoodDetector()
@@ -27,8 +28,8 @@ def fallback_existing_image():
     img_bytes = camera.get_image_bytes()
     if img_bytes:
         print("Using existing image")
-        moodDetector.ms_get_image_data(img_bytes)
-        spotifyConnector.browse_for_mood(moodDetector.currentMood)
+        if moodDetector.ms_get_image_data(img_bytes):
+            spotifyConnector.browse_for_mood(moodDetector.currentMood)
     else:
         print("No existing image. Stopping immediately.")
 

@@ -60,6 +60,7 @@ class FaceMood:
         reset_target_values()
         self.add_seeds()
 
+        print(target_values)
         return target_values
 
     def add_seeds(self):
@@ -77,7 +78,7 @@ class FaceMood:
             target_values['seed_tracks'].append(seed)
             target_values['target_energy'] *= 1 - self.sadness
             target_values['target_danceability'] *= 1 - self.sadness
-            target_values['target_instrumentalness'] *= self.happiness
+            target_values['target_instrumentalness'] *= 1 - self.happiness
 
         if self.contempt > .25 or self.disgust > .25:  #play negative songs, with higher energy
             seed = random.choice(spotify_annoyed_seeds)
@@ -86,7 +87,7 @@ class FaceMood:
             target_values['target_valence'] *= 1 - max(self.contempt, self.disgust)
             target_values.pop('target_liveness')
 
-        if self.anger > .25 or self.fear:    #play calming, slow songs
+        if self.anger > .25 or self.fear > .25:    #play calming, slow songs
             seed = random.choice(spotify_calm_seeds)
             target_values['seed_tracks'].append(seed)
             target_values['target_energy'] *= 1 - max(self.anger, self.fear)
@@ -100,6 +101,9 @@ class FaceMood:
 
         if self.neutral > .60:
             target_values['target_energy'] = .7
+            target_values.pop('target_instrumentalness')
+            target_values.pop('target_acousticness')
+            target_values.pop('target_liveness')
 
         if self.sadness > 60:
             target_values.pop('target_valence')
