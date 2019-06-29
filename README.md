@@ -384,7 +384,7 @@ function initPlayer() {
 Über den Aufruf von *player.connect()* wird der definierte Player 'erstellt' und dem angegebenen Spotify-Konto zugewiesen. Über mehrere Callback-Methoden können auf dem Player-Objekt bestimmte (Status)Informationen abgefragt werden. Beispielsweise kann über das Callback *ready* die Device-ID des Players ermittelt werden. Diese stellt eine wichtige Information dar, denn anhand dieser ID kann später über einen REST-Call an die Spotify-API mitgeteilt werden, auf welchem Gerät, welches Lied gespielt werden soll.
 
 
-#### Abspielen des Songs (Informationen zum Song)
+#### Abspielen und Informationen eines Songs
 Das Abspielen eines bestimmten Songs wird ebenfalls in eine eigene JavaScript-Funktion ausgelagert (*playSongInternal*). Der Funktion wird die vorher ausgelesene Device-ID, ein Access-Token zur Authentifizierung und die Spotify-URI des zu spielenden Lieds mitgegeben. Die übergebenen Parameter werden in folgenden REST-Call verpackt:
 
 ```javascript
@@ -468,20 +468,20 @@ In diesem Abschnitt wird näher auf die erhalten Ergebnisse der einzelnen Kompon
 #### Raspberry Pi
 Sobald der Raspberry Pi angesteckt wird, startet MoodSpotter. Er nimmt erfolgreich Fotos auf, diese werden von den Microsoft Cognitive Services ausgewertet.
 Diese Werte werden in Lied-Metriken umgerechnet, welche die Spotify API zum wählen passender Lieder nutzt. Die gefundenen Lieder werden daraufhin an RabbitMQ weitergegeben.
-Anhand der Debugging Ausgabe lässt sich nachvollziehen, wie das ermitteln der Lieder abläuft.
+Anhand der Debugging-Ausgabe lässt sich nachvollziehen, wie das Ermitteln der Lieder abläuft.
 
 <p align="center">
   <img src="images/sadSongs.PNG" width="85%"/>
 </p>
 
-Aufgrund des hohen *Sadness* Wertes werden Lieder mit hoher Instrumentalness, und niedrigem Energiewert gesucht. Zusätzlich wird auch die Tanzbarkeit des Liedes niedrig angesetzt.
+Für obiges beispiel werden aufgrund des hohen *Sadness*-Wertes Lieder mit hoher Instrumentalness und niedrigem Energiewert gesucht. Zusätzlich wird auch die Tanzbarkeit des Liedes niedrig angesetzt.
 Das Seed-Lied hatte in diesem Fall die ID *0BfVKJALJjpzNYIQiEgF2G*, dabei handelt es sich um das Lied Waves von Dean Lewis.
-Die dafür gefundenen Lieder wirken alle etwas traurig, was genau das von uns gewünschte Ergebnis war, hier zwei Beispiele:
+Die dafür gefundenen Lieder wirken alle etwas traurig - aber dennoch entspannend, was genau das von uns gewünschte Ergebnis war, hier zwei gefundene Beispiel-Lieder:
 
-Radioactive
+Radioactive: 
 https://open.spotify.com/track/4Y2yIyaoo0q7cM4OfVc9e2?si=2TVeNAGCRDWiTgPK4m3Gpw
 
-Can't feel my face
+Can't feel my face: 
 https://open.spotify.com/track/5zwNJ8meHAvLwHsQ1QCrZD?si=Xle2wrCfQlORd9UxPEB4YQ
 
 
