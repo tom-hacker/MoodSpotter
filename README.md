@@ -108,22 +108,59 @@ Da sich der Raspberry Pi und der Microservice unter realen Bedingungen in unters
 Wie schon im Abschnitt zu *Raspberry Pi und RabbitMQ* hervorgeht, gibt es am RabbitMQ-Broker eine vordefinierte Exchange. Jene hat den Namen *songExchange* und ist vom Typ *DIRECT*. 
 
 <p align="center">
-  <img src="images/exchange.PNG" width="50%"/>
+  <img src="images/exchange.PNG" width="60%"/>
 </p>
 
 Die zu spielendenden Lieder werden an die Queue *songs* geroutet, welche mit dem Routing-Key *songs* an obige Exchange gebunden ist.
 
 <p align="center">
-  <img src="images/queue.PNG" width="50%"/>
+  <img src="images/queue.PNG" width="60%"/>
 </p>
 
 <p align="center">
-  <img src="images/message.PNG" width="50%"/>
+  <img src="images/message.PNG" width="60%"/>
 </p>
 
 
 ### Microservice 'MoodSpotterOnline'
-Mittels Thorntail, kann in Docker gestartet werden. Ist Subscriber vom RabbitMQ Message Broker, hat intern eine eigene Queue. Bietet API für MoodSpotter-Web, um das nächste Lied zu holen.
+#### Allgemein
+Der Microservice wurde mittels Java EE und dem Microserivce-Framework 'Thorntail' (https://thorntail.io/) umgesetzt. Dadurch kann dieser Service später überall leichtgewichtigt deployt werden und ist von keinem umgebenden Application-Server abhängig.
+
+#### RabbitMQ und Song-Queue
+Der Microservice ist Subscriber der Queue *songs*. Die Logik zum Holen der Songs befindet sich in der Klasse *RabbitMQClient*. 
+
+```java
+Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            
+channel.basicConsume(QUEUE_NAME, true,
+        new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag,
+                                       Envelope envelope,
+                                       AMQP.BasicProperties properties,
+                                       byte[] body)
+                    throws IOException {
+                System.out.print("Message received: ");
+                message = new String(body);
+                System.out.println("(Spotify-URI) " + message);
+                uriQueue.add(message);
+            }
+        });
+```
+
+Logging beim Empfangen einer Nachricht:
+<p align="center">
+  <img src="images/microservice.PNG" width="60%"/>
+</p>
+
+
+#### REST-Schnittstelle
+
+
+#### Docker-Deployment
+Durch den Einsatz des Microserivce-Framework ist es möglich, den Service in einem Docker-Container laufen zu lassen. Der Doker-Container wird über folgendes *docker-compose.yml* konfiguriert und lässt sich anschließend mit *docker-compose up* hochfahren:
+
 
 
 ### Web-Anwendung 'MoodSpotterWeb'
