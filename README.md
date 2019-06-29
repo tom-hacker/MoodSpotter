@@ -31,7 +31,7 @@ Die Struktur lässt sich dabei am besten anhand der Benutzung von MoodSpotter er
 Das Kernstück von MoodSpotter ist der Raspberry Pi. Er nimmt die Bilder auf, spricht die APIs an und übernimmt das berechnen der Ziel-Liedmetriken.
 
 #### Setup
-Als Betriebssystem wird Raspian verwendet. Das Kameramodul wird am dafür vorgesehenen Anschluss installiert. Anschließend musste das Kamera-Modul in den Einstellungen noch aktiviert werden. //TODO: WO??
+Als Betriebssystem wird Raspian verwendet. Das Kameramodul wird am dafür vorgesehenen Anschluss installiert. Anschließend musste das Kamera-Modul in den Einstellungen noch aktiviert werden. Dies geschieht in der Raspberry Pi Config, erreichbar mit sudo raspi-config
 Nachdem die Anwendung 'Moodspotter' beim Starten des Raspberry Pis sofort starten soll, wurde der Pfad zum Einstiegspunkt in der Datei */etc/rc.local* hinterlegt.
 Dadurch wird das Programm im Boot-Prozess gestartet. 
 Damit der Raspberry Pi mit den APIs und mit RabbitMQ kommunizieren kann, muss er außerdem in einem Netzwerk mit Internetzugriff sein. Um dies zu konfigurieren wurde er eingangs an einen Bildschirm, und an Tastatur und Maus angeschlossen.
