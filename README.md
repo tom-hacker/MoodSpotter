@@ -1,7 +1,7 @@
 # MoodSpotter
 Projektarbeit zu Mobile und ubiquitäre Systeme (MUS)
 
-**Projekt-Team:** Tom Hacker und Verena Teufl
+Projekt-Team: Tom Hacker und Verena Teufl
 
 ## Projektbeschreibung
 ### Problembeschreibung
@@ -308,20 +308,35 @@ getSong() {
 ```
 
 #### User-Interface
+Die/der BenutzerIn hat die Möglichkeit über die Weboberfläche mit dem Player zu interagieren. Falls ihr/ihm das aktuelle Lied nicht gefallen sollte, kann über Klick auf den Button *Play next Song!* auf den nächsten Track weitergeschalten werden. Daraufhin wird die in der Player-Component definierte Funktion *getSong()* aufgerufen und daraufhin das nächste Lied gefetcht.
+
 ```html
-<button class="ui button" value="Play next Song" (click)="getSong()" style="margin-bottom: 25px; margin-top: 10px;">Play
-    next Song!</button>
+<button class="ui button" value="Play next Song" (click)="getSong()">Play next Song!</button>
 ```
+Wie die UI für den Benutzer aussieht, wird im nächsten Abschnitt *Ergebnisse* aufgezeigt.
+
 
 ## Ergebnisse
-Bilder aus Präsentation
+Rückblickend ist ein 
 
-ev. wie man das Projekt noch weiter ausbauen könnte 
-
-
-Die Face-API der Microsoft Cognitive Services dient zum erkennen von Gesichtern in Bildern. Neben allgemeneinen Informationen zum Gesicht, beispielsweise den Abständen zu Gesichtsmerkmalen, können auch kompliziertere Informationen ermittelt werden. Möglich sind beispielsweise das Geschlecht, ungefähre Alter, getragene Accessoires, von der Person getragenes Make-Up, bis zur Stimmung der Person.
+#### Raspberry PI
+//TODO
+Die Face-API der Microsoft Cognitive Services dient zum Erkennen von Gesichtern in Bildern. Neben allgemeneinen Informationen zum Gesicht, beispielsweise den Abständen zu Gesichtsmerkmalen, können auch kompliziertere Informationen ermittelt werden. Möglich sind beispielsweise das Geschlecht, ungefähre Alter, getragene Accessoires, von der Person getragenes Make-Up, bis zur Stimmung der Person.
 
 * sadness
 
+<p align="center">
+  <img src="images/sadSongs.PNG"  width="90%"/>
+</p>
+
 Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur Stimmung der Person wichtig. Sie wird in sieben wichtige Stimmungen eingeteilt, zurückgegeben werden Prozentewerte, die insgesamt die Stimmung beschreiben.
 Spotify bietet viele verschiedene Endpoints zur Nutzung seiner Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
+
+#### Web-Player
+<p align="center">
+  <img src="images/web_withoutSong.PNG" width="90%"/>
+</p>
+
+<p align="center">
+  <img src="images/web_withSong.PNG"  width="90%"/>
+</p>
