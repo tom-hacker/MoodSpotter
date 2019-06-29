@@ -16,7 +16,6 @@ public class RabbitMQClient implements RabbitMQClientInterface {
     private String message = "";
     private Queue<String> uriQueue = new SizedQueue<>(6);
 
-    private final static String EXCHANGE_NAME = "songExchange";
     private final static String QUEUE_NAME = "songs";
 
     @PostConstruct
@@ -31,10 +30,7 @@ public class RabbitMQClient implements RabbitMQClientInterface {
         try {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-            System.out.println("Connection done");
 
-            AMQP.Queue.DeclareOk response = channel.queueDeclarePassive(QUEUE_NAME);
-            System.out.println("Connected to queue. msgs:" + response.getMessageCount());
             channel.basicConsume(QUEUE_NAME, true,
                     new DefaultConsumer(channel) {
                         @Override
@@ -43,9 +39,9 @@ public class RabbitMQClient implements RabbitMQClientInterface {
                                                    AMQP.BasicProperties properties,
                                                    byte[] body)
                                 throws IOException {
-                            System.out.println("msg received");
+                            System.out.print("Message received: ");
                             message = new String(body);
-                            System.out.println("uri: " + message);
+                            System.out.println("(Spotify-URI) " + message);
                             uriQueue.add(message);
                         }
                     });
@@ -63,7 +59,7 @@ public class RabbitMQClient implements RabbitMQClientInterface {
     }
 
     @Override
-    public String getMessage() {
+    public String getSong() {
         try {
             return uriQueue.poll();
         }

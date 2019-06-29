@@ -18,8 +18,7 @@ public class SongResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNextSongURI() {
-        SongDTO song = new SongDTO(rabbitMQClient.getMessage());
+        SongDTO song = new SongDTO(rabbitMQClient.getSong());
         return Response.ok(song).build();
     }
-
 }

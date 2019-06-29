@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
-//declare function from java script "player.js"
+//declare functions from javaScript "player.js"
 declare function initPlayer()
 declare function playSong(uri);
 

@@ -1,5 +1,5 @@
 
-const token = "BQDpeC5gbDZWVG3D_1yYD6R6YnIqYQeLIHWdV6o2rba-2PIDlVlH3E65rzWEaKaOof_JJ7FX-2nRnTPd7uBou_k4QUMK1f_6tdDNaPKF6vdoX0zq6vIk7XuITbR5-sh8UaThYDb2R8Fs9HgA9SZHTfuXbRn--tqWjznYb99P4Q";
+const token = "insert token here to use player";
 moodSpotterDevicdId = "";
 
 currTrack = "";
@@ -22,7 +22,7 @@ function initPlayer() {
     //get status updates
     player.addListener('player_state_changed', state => { console.log(state); this.parseTrack(state); });
 
-    //player not ready
+    //player ready
     player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id);
       moodSpotterDevicdId = device_id;
