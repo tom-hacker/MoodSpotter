@@ -151,16 +151,54 @@ channel.basicConsume(QUEUE_NAME, true,
 
 Logging beim Empfangen einer Nachricht:
 <p align="center">
-  <img src="images/microservice.PNG" width="60%"/>
+  <img src="images/microservice.PNG"/>
 </p>
 
+Jede empfangene Nachricht wird intern in eine eigene Queue-Datenstruktur (*SizedQueue*) gelegt, welche maximal 6 Lieder zwischenpuffert. 
+
+```java
+private Queue<String> uriQueue = new SizedQueue<>(6);
+  
+// ...
+  
+public String getSong() {
+      try {
+          return uriQueue.poll();
+      }
+  }
+```
+Beim Aufruf der Methode *getSong* wird das nächste Lieder von der Queue geholt und kann so weiterverarbeit werden.
 
 #### REST-Schnittstelle
+Über den REST-Endpoint *localhost:8082/api/song* hat de Webanwendung sodann Zugriff auf das nächste zu spielende Lied:
 
+```java
+@Path("/song")
+public class SongResource {
+
+    @Inject
+    RabbitMQClientInterface rabbitMQClient;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNextSongURI() {
+        SongDTO song = new SongDTO(rabbitMQClient.getSong());
+        return Response.ok(song).build();
+    }
+}
+```
 
 #### Docker-Deployment
-Durch den Einsatz des Microserivce-Framework ist es möglich, den Service in einem Docker-Container laufen zu lassen. Der Doker-Container wird über folgendes *docker-compose.yml* konfiguriert und lässt sich anschließend mit *docker-compose up* hochfahren:
+Durch den Einsatz des Microserivce-Framework ist es möglich, den Service in einem Docker-Container laufen zu lassen. Die einzelnen Script befinden sich im Ordner 'Doker' (im Root-Verzeichnis dieses Repositories).  Das Script *build.ps1* kopiert zunächst die generierten *uberjars* des Microserivce-Frameworks 'Thorntail' in den zugehörigen Ordner, und führt daraufhin *docker-compose* aus. Der Doker-Container zu MoodSpotter wird über das File *docker-compose.yml* konfiguriert und lässt sich anschließend mit *docker-compose up* hochfahren:
 
+```yml
+version: "3"
+services:
+    container_name: MoodSpotterOnline
+    build: .
+    ports:
+        - "8082:8082"
+```
 
 
 ### Web-Anwendung 'MoodSpotterWeb'
