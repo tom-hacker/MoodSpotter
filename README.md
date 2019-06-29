@@ -203,21 +203,105 @@ services:
 
 ### Web-Anwendung 'MoodSpotterWeb'
 #### Allgemein
-Umsetzung von Angular App, mit Java Scripts 
+Wie bereits erwähnt, können die zur Stimmung ermittelten Lieder über einen eigen mit Spotify-Integration entwickelten Web-Player abgespielt werden. Die Webapplikation wurde mit Angular 8 (Typescript) und JavaScript umgestzt. Jene läuft auf *\<host\>:4200*. 
 
 #### Spotify Playback SDK
-Java Script Library, 
+Um die Spotify-Integration zu ermöglichen, wurde das von Spotify entwickelte 'Web Playback SDK' (https://developer.spotify.com/documentation/web-playback-sdk/reference/) eingesetzt. 
 
+Die Library für das 'Web Playback SDK' kann folgendermaßen eingebunden werden:
+```javascript
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+```
+Da es sich dabei um eine JavaScript-Library handelt, wurde die gesamte Funktionalität zum Integrieren des eigenen Webplayer in ein eigenes Script ausgelagtert. Das Script befindet sich unter *assets/player.js* und wird später in den HTLM-Templates von Angular eingebunden.
 
-#### Kommunikation mit 'MoodSpotterOnline'
-REST, HttpClient
+Im Script wird die Funktion *initPlayer* definiert, welche später von Angular aus aufgerufen werden kann. In dieser wird die Initalisierung des Spotify-WebPlayback durchgeführt (*onSpotifyWebPlaybackSDKReady*). Zunächst wird ein neuer Player definiert. Es können dabei der Name (hier: MoodSpotter Player -> unter diesen Namen wird jener später u.a. bei den Spotify-Connect Geräten aufgelistet) als auch ein Access-Token (welches die zugehörigen Benutzerinformationen enthält), um den Player einem Spotify-Konto zuordnen zu können, angegeben werden.
+
+```javascript
+function initPlayer() {
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const player = new Spotify.Player({
+      name: 'MoodSpotter Player',
+      getOAuthToken: cb => { cb(token); }
+    });
+    
+    //player connected
+    player.connect();
+    
+     //player ready
+    player.addListener('ready', ({ device_id }) => {
+      console.log('Ready with Device ID', device_id);
+      moodSpotterDevicdId = device_id;
+    });
+   }
+}
+```
+Über den Aufruf von *player.connect()* wird der definierte Player 'erstellt' und dem angegebenen Spotify-Konto zugewiesen. Über mehrere Callback-Methoden können auf dem Player-Objekt bestimmte (Status)Informationen abgefragt werden. Beispielsweise kann über das Callback *ready* die Device-ID des Players ermittelt werden. Diese stellt eine wichtige Information dar, denn anhand dieser ID kann später über einen REST-Call an die Spotify-API mitgeteilt werden, auf welchem Gerät, welches Lied gespielt werden soll.
 
 
 #### Abspielen des Songs (Informationen zum Song)
-Abspielen wird über Spotify API erreicht, Informationen zum Song über status
+
+```javascript
+function playSongInternal(device_id, _token, trackUri) {
+  $.ajax({
+    url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+    type: "PUT",
+    data: '{"uris": ["' + trackUri + '"]}',
+    beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer ' + _token); },
+    success: function (data) {
+    }
+  });
+```
+
+```javascript
+function parseTrack(uri) {
+  if (uri != null) {
+    this.currTrack = uri.track_window.current_track.name;
+    this.currArtist = uri.track_window.current_track.artists[0].name;
+    this.currAlbumImg = uri.track_window.current_track.album.images[0].url;
+  }
+}
+```
+
+
+#### Player-Component (Java-Script Calls und REST-Kommunikation)
+
+```typescript
+//declare functions from javaScript "player.js"
+declare function initPlayer()
+declare function playSong(uri);
+```
+
+```typescript
+getSong() {
+    this.http.get(this.apiEndpoint)
+      .subscribe(response => {
+        //get song
+        this.currSong = response.song;
+
+        //play song
+        if (this.currSong != null)
+          playSong(this.currSong);
+
+        //get infos
+        (async () => {
+          await this.delay(400);
+          this.currSongName = getTrackName();
+
+          console.log("Playing" + this.currSongName);
+
+          this.currArtist = getArtist();
+          this.currAlbumImg = getAlbumImg();
+        })();
+      }
+      );
+  }
+```
 
 #### User-Interface
-
+```html
+<button class="ui button" value="Play next Song" (click)="getSong()" style="margin-bottom: 25px; margin-top: 10px;">Play
+    next Song!</button>
+```
 
 ## Ergebnisse
 Bilder aus Präsentation
