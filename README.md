@@ -1,4 +1,4 @@
-# MoodSpotter (Music that fits how you feel)
+# MoodSpotter (music that fits how you feel)
 Projektarbeit zu Mobile und ubiquitäre Systeme (MUS)
 
 Projekt-Team: Tom Hacker und Verena Teufl
@@ -61,8 +61,8 @@ Da für den Zugriff auf die externen APIs viele gleichbleibende Einstellungen vo
 In der Datei Config.py befinden sich die allgemeinen Einstellungen. In der zusätzlichen Datei SecretConfig.py befinden sich die API-Passwörter. Diese Datei wird mittels .gitignore vom Upload auf Github ausgeschlossen.
 
 #### Kameramodul
-Als Bibliothek zum Ansprechen der Raspberry Pi Kamera wurde PiCamera verwendet https://picamera.readthedocs.io/
-Die Methoden zum aufnehmen und zum Laden der Fotos wurden in der Datei *MoodCamera.py* implementiert.
+Als Bibliothek zum Ansprechen der Raspberry Pi Kamera wurde PiCamera verwendet (https://picamera.readthedocs.io/).
+Die Methoden zum Aufnehmen und zum Laden der Fotos wurden in der Datei *MoodCamera.py* implementiert.
 Das Aufnehmen von Fotos ist mit sehr wenigen Zeilen Code möglich. 
 ```python
 def take_photo(self):
@@ -90,10 +90,8 @@ def get_image_bytes(self):
     return f
 ```
 
-Zum Start des Programms wird zunächst die Kamera in der Methode *init_camera()* initalisiert. Ist sie fertig initialisiert wird außerdem sofort ein Foto aufgenommen, damit etwaige Probleme der Kamera sofort zu einem Fehlerfall führen.
+Zum Start des Programms wird zunächst die Kamera in der Methode *init_camera()* initalisiert. Ist diese fertig initialisiert, wird außerdem sofort ein Foto aufgenommen, damit etwaige Probleme der Kamera sofort zu einem Fehlerfall führen.
  
-
-
 
 #### Microsoft Cognitive Services
 https://azure.microsoft.com/en-us/services/cognitive-services/face/
@@ -113,9 +111,10 @@ Folgende Werte werden dabei ermittelt:
 
 
 <p align="center">
-  <img src="images/angryPerson.JPG" width="80%"/>
+  <img src="images/angryPerson.jpg" width="60%"/>
 </p>
-Für dieses Beispielbild sieht man in der Response, dass die Stimmung der Person richtig auf *Angry* eingeschätzt wird.
+
+Für dieses Beispielbild sieht man in der Response, dass die Stimmung der Person richtig auf *angry* eingeschätzt wird.
 
 <pre>
  [
@@ -162,7 +161,7 @@ Für dieses Beispielbild sieht man in der Response, dass die Stimmung der Person
 
 
 
-In MoodSpotter wird die API in der Klasse MoodDetector angesprochen. Der Zugriff geschieht über REST, dafür wird die *Requests* Bibliothek verwendet. Die erhaltenen Daten werden daraufhin als Objekt zwischengespeichert.
+In MoodSpotter wird die API in der Klasse MoodDetector angesprochen. Der Zugriff geschieht über REST, dafür wird die *Requests*-Bibliothek verwendet. Die erhaltenen Daten werden daraufhin als Objekt zwischengespeichert.
 ```java
 r = requests.post(ms_cognitive_url,
                   params=ms_cognitive_params,
@@ -173,18 +172,17 @@ faces = json.loads(r.text, object_hook=lambda d: Namespace(**d))
 ```
 
 
-Daraufhin werden die von der API gelieferten aller Gesichter zusammengefasst und intern gespeichert. Um Fehler durch einen momentan anderen Gesichtsausdruck zu vermeiden, bleiben die zuvor erhaltenen Werte erhalten, werden jedoch in ihrer Wichtigkeit um die Hälfte reduziert.
+Daraufhin werden die von der API gelieferten Werte aller Gesichter zusammengefasst und intern gespeichert. Um Fehler durch einen momentan anderen Gesichtsausdruck zu vermeiden, bleiben die zuvor erhaltenen Werte erhalten, werden jedoch in ihrer Wichtigkeit um die Hälfte reduziert.
 Hierfür ist die Klasse *FaceMood* zuständig.
 
 
 #### Spotify-API
-https://developer.spotify.com/documentation/web-api/
-Spotify bietet viele verschiedene Endpoints zur Nutzung der angebotenen Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
+Die Spotify-API (https://developer.spotify.com/documentation/web-api/) bietet viele verschiedene Endpoints zur Nutzung der angebotenen Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
 Möglich sind unter anderem Abfragen zu Liedern, Alben, Interpreten oder auch Nutzern. Auch das externe Steuern von mit Spotify verbundenen Geräten ist möglich. 
 Die Authorisierung erfolgt mittels OAuth2. Jedoch können einige Endpoints auch ohne Login genutzt werden.
 
 MoodSpotter nutzt den Browse/Recommendations-Endpoint der API. Dieser ermittelt anhand von Seed-Liedern dazu passende weitere Tracks. Zusätzlich können unterschiedliche Lied-Metriken angegeben werden, welche die erwarteten Ergebnisse in eine Richtung leiten oder einschränken sollen.
-Weitere Dokumentation findet sich unter https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/
+Weitere Dokumentation findet sich unter https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/.
 
 Die verwendeten Seeds, sowie die Ziel-Metriken werden von der Klasse FaceMood ermittelt.
 So wird, falls eine Stimmung über 25% ist, für sie ein zufälliger passender Seed ausgewählt. Außerdem werden dann aufgrund des Prozentsatzes die Lied-Metriken errechnet, als Beispiel die Logik für die Stimmung *Happiness*.
@@ -226,9 +224,9 @@ Hier ein Teil der Response, jedoch ohne die sehr ausführlichen Informationen zu
 
 
 #### RabbitMQ
-Die Ids der gewählten Lieder werden an RabbitMQ geschickt. Mehr Informationen finden sich im nächsten Abschnitt, hier geht es lediglich um die Anbindung am Raspberry Pi.
-Der Zugriff am Raspberry Pi, wiederum in der Klasse SpotifyConnector, genutzt wird dazu die Bibliothek Pika. https://pika.readthedocs.io/en/stable/
-Zunächst werden Exchange und Queue definiert, eine direkte Exchange, die alle Nachrichten mit dem passenden Routing Key an die Queue *songs* weiterleitet.
+Die URIs der gewählten Lieder werden an RabbitMQ geschickt. Mehr Informationen finden sich im nächsten Abschnitt, hier geht es lediglich um die Anbindung am Raspberry Pi.
+Der Zugriff am Raspberry Pi, wiederum in der Klasse SpotifyConnector, genutzt wird dazu die Bibliothek Pika (https://pika.readthedocs.io/en/stable/).
+Zunächst werden Exchange (*songExchange*) und Queue (*songs*) definiert. Über ein Binding an die Exchange vom Typ DIRECT werden alle Nachrichten mit dem passenden Routing-Key an die Queue *songs* weiterleitet.
 
 ```python
 def send_to_rabbit(self, uri):
