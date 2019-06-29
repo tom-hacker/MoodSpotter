@@ -105,20 +105,20 @@ Damit das Raspberry Pi Modul und die MoodSpotter-Webanwendung miteinander kommun
 Da sich der Raspberry Pi und der Microservice unter realen Bedingungen in unterschiedlichen Netzwerken befinden, musste, um auf beiden Seiten eine simple Anbindung an den RabbitMQ-Broker zu ermöglich, eine entsprechende Lösung evaluiert werden. Es wurde auf einen Anbieter gesetzt, welcher RabbitMQ-Insatzen (unteranderem gratis) online hostet (https://www.cloudamqp.com/). Dadurch wird der RabbitMQ Message-Broker über eine fixe Web-URL zugänglich, auf welche sich der RaspberryPi und der Microservice (solange diese Internetzugriff haben) verbinden können.
 
 #### Aufbau
-Wie schon im Abschnitt zu *Raspberry Pi und RabbitMQ* hervorgibt, gibt es am RabbitMQ-Broker eine vordefinierte Exchange. Jene hat den Namen *songExchange* und ist vom Typ *DIRECT*. 
+Wie schon im Abschnitt zu *Raspberry Pi und RabbitMQ* hervorgeht, gibt es am RabbitMQ-Broker eine vordefinierte Exchange. Jene hat den Namen *songExchange* und ist vom Typ *DIRECT*. 
 
 <p align="center">
-  <img src="images/exchange.JPG" width="50%"/>
+  <img src="images/exchange.PNG" width="50%"/>
 </p>
 
-Die zuspielendenden Lieder werden an die Queue *songs* geroutet, welche mit dem Routing-Key *songs* an obigen Exchange gebunden ist.
+Die zu spielendenden Lieder werden an die Queue *songs* geroutet, welche mit dem Routing-Key *songs* an obige Exchange gebunden ist.
 
 <p align="center">
-  <img src="images/queue.JPG" width="50%"/>
+  <img src="images/queue.PNG" width="50%"/>
 </p>
 
 <p align="center">
-  <img src="images/message.JPG" width="50%"/>
+  <img src="images/message.PNG" width="50%"/>
 </p>
 
 
