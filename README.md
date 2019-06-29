@@ -317,9 +317,9 @@ Wie die UI für den Benutzer aussieht, wird im nächsten Abschnitt *Ergebnisse* 
 
 
 ## Ergebnisse
-Rückblickend ist ein 
+In diesem Abschnitt wird näher auf die erhalten Ergebnisse der einzelnen Komponenten (Raspberry Pi und den Web-Player) eingegangen um das korrekte Verhalten darzustellen.
 
-#### Raspberry PI
+#### Raspberry Pi
 //TODO
 Die Face-API der Microsoft Cognitive Services dient zum Erkennen von Gesichtern in Bildern. Neben allgemeneinen Informationen zum Gesicht, beispielsweise den Abständen zu Gesichtsmerkmalen, können auch kompliziertere Informationen ermittelt werden. Möglich sind beispielsweise das Geschlecht, ungefähre Alter, getragene Accessoires, von der Person getragenes Make-Up, bis zur Stimmung der Person.
 
@@ -333,10 +333,20 @@ Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur St
 Spotify bietet viele verschiedene Endpoints zur Nutzung seiner Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
 
 #### Web-Player
+Das Ergebnis des 'MoodSpotter-Player' kann durch eine funktionierende Web-Oberfläche mit Spotify-Integration dargestellt werden. Wird der Player gestartet oder es können keine weiteren Lieder mehr abgespielt werden, da eventuell das Kameramodul nicht richtig ausgerichtet ist, und somit der Raspberry Pi keine Gesichter erkennen kann, ist für die/den BenutzerIn folgende Web-Oberfälche zu sehen:
+
 <p align="center">
   <img src="images/web_withoutSong.PNG" width="90%"/>
 </p>
 
 <p align="center">
-  <img src="images/web_withSong.PNG"  width="90%"/>
+  <img src="images/web_withSong.PNG" width="90%"/>
 </p>
+
+<p align="center">
+  <img src="images/spotify_connect.PNG" width="90%"/>
+</p>
+
+
+#### Zusammenfassung und Ausblick
+//TODO
