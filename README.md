@@ -38,6 +38,27 @@ Nachdem Moodspotter beim Starten des Raspberry Pis sofort starten soll, wurde de
 Dadurch wird das Programm im Boot-Prozess gestartet. 
 Damit der Raspberry Pi mit den APIs und mit RabbitMQ kommunizieren kann, muss er außerdem in einem Netzwerk mit Internetzugriff sein. Um dies durchzuführen wurde er eingangs an einen Bildschirm, und an Tastatur und Maus angeschlossen.
 
+#### Allgemeines
+Der Einstiegspunkt von MoodSpotter am Raspberry Pi befindet sich in der Datei *MoodSpotter.py*.
+Hier werden zunächst die drei wichtigen Komponenten MoodCamera, MoodDetector und SpotifyConnector initialisiert.
+Tritt beim Initialisieren der Kamera kein Fehler auf, so wird das main_loop gestartet, welches die Unterschiedlichen Komponenten steuert.
+
+Mit jedem durchlauf werden also das zuvor geschossene Bild geladen. Mit diesem Bild werden die MS Cognitive Services angesprochen.
+Der boolean der Funktion *ms_get_image_data()* sagt dabei aus, ob das Bild Gesichter enthält. Trifft dies zu, so wird auf Spotify nach passenden Lieder gesucht und 30 Sekunden gewartet.
+Wurde kein Gesicht gefunden, so wird lediglich 5 Sekunden gewartet und Spotify nicht nach Liedern durchsucht.
+Zum Abschluss wird das nächste Foto geschossen, bevor die Schleife von vorne beginnt.
+```python
+def main_loop():
+    while True:
+        img_bytes = camera.get_image_bytes()
+        if moodDetector.ms_get_image_data(img_bytes):
+            spotifyConnector.browse_for_mood(moodDetector.currentMood)
+            sleep(30)
+        else:
+            sleep(5)
+        camera.take_photo()
+```
+
 
 #### Kameramodul
 Beschreibung und Code
