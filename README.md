@@ -468,20 +468,20 @@ In diesem Abschnitt wird näher auf die erhalten Ergebnisse der einzelnen Kompon
 #### Raspberry Pi
 Sobald der Raspberry Pi angesteckt wird, startet MoodSpotter. Er nimmt erfolgreich Fotos auf, diese werden von den Microsoft Cognitive Services ausgewertet.
 Diese Werte werden in Lied-Metriken umgerechnet, welche die Spotify API zum wählen passender Lieder nutzt. Die gefundenen Lieder werden daraufhin an RabbitMQ weitergegeben.
-Anhand der Debugging Ausgabe lässt sich nachvollziehen, wie das ermitteln der Lieder abläuft.
+Anhand der Debugging-Ausgabe lässt sich nachvollziehen, wie das Ermitteln der Lieder abläuft.
 
 <p align="center">
   <img src="images/sadSongs.PNG" width="85%"/>
 </p>
 
-Aufgrund des hohen *Sadness* Wertes werden Lieder mit hoher Instrumentalness, und niedrigem Energiewert gesucht. Zusätzlich wird auch die Tanzbarkeit des Liedes niedrig angesetzt.
+Für obiges beispiel werden aufgrund des hohen *Sadness*-Wertes Lieder mit hoher Instrumentalness und niedrigem Energiewert gesucht. Zusätzlich wird auch die Tanzbarkeit des Liedes niedrig angesetzt.
 Das Seed-Lied hatte in diesem Fall die ID *0BfVKJALJjpzNYIQiEgF2G*, dabei handelt es sich um das Lied Waves von Dean Lewis.
-Die dafür gefundenen Lieder wirken alle etwas traurig, was genau das von uns gewünschte Ergebnis war, hier zwei Beispiele:
+Die dafür gefundenen Lieder wirken alle etwas traurig - aber dennoch entspannend, was genau das von uns gewünschte Ergebnis war, hier zwei gefundene Beispiel-Lieder:
 
-Radioactive
+Radioactive: 
 https://open.spotify.com/track/4Y2yIyaoo0q7cM4OfVc9e2?si=2TVeNAGCRDWiTgPK4m3Gpw
 
-Can't feel my face
+Can't feel my face: 
 https://open.spotify.com/track/5zwNJ8meHAvLwHsQ1QCrZD?si=Xle2wrCfQlORd9UxPEB4YQ
 
 
