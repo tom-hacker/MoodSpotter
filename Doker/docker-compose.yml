@@ -1,0 +1,6 @@
+version: "3"
+services:
+    container_name: MoodSpotterOnline
+    build: .
+    ports:
+        - "8082:8082"
