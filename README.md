@@ -1,4 +1,4 @@
-# MoodSpotter
+# MoodSpotter (Music that fits how you feel)
 Projektarbeit zu Mobile und ubiquitäre Systeme (MUS)
 
 Projekt-Team: Tom Hacker und Verena Teufl
@@ -326,7 +326,7 @@ Die Face-API der Microsoft Cognitive Services dient zum Erkennen von Gesichtern 
 * sadness
 
 <p align="center">
-  <img src="images/sadSongs.PNG"  width="90%"/>
+  <img src="images/sadSongs.PNG" width="85%"/>
 </p>
 
 Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur Stimmung der Person wichtig. Sie wird in sieben wichtige Stimmungen eingeteilt, zurückgegeben werden Prozentewerte, die insgesamt die Stimmung beschreiben.
@@ -336,17 +336,23 @@ Spotify bietet viele verschiedene Endpoints zur Nutzung seiner Services, sowie z
 Das Ergebnis des 'MoodSpotter-Player' kann durch eine funktionierende Web-Oberfläche mit Spotify-Integration dargestellt werden. Wird der Player gestartet oder es können keine weiteren Lieder mehr abgespielt werden, da eventuell das Kameramodul nicht richtig ausgerichtet ist, und somit der Raspberry Pi keine Gesichter erkennen kann, ist für die/den BenutzerIn folgende Web-Oberfälche zu sehen:
 
 <p align="center">
-  <img src="images/web_withoutSong.PNG" width="90%"/>
+  <img src="images/web_withoutSong.PNG" width="85%"/>
 </p>
 
-<p align="center">
-  <img src="images/web_withSong.PNG" width="90%"/>
-</p>
+Klickt die/der BenutzerIn nun auf den Button *Play next Song!* wird daraufhin das nächste Lied abgespielt und dementsprechend die Infos zu dem Track angezeigt. Über die eingebaute Webbrowser-Funktionalität kann der aktuell gespielte Song pausiert oder weitergespielt werden.
 
 <p align="center">
-  <img src="images/spotify_connect.PNG" width="90%"/>
+  <img src="images/web_withSong.PNG" width="85%"/>
+</p>
+
+Wie bereits erwähnt, ist dieser Player einem konkreten Spotify-Nutzer zugeordnet und erscheint nun unter den auswählbaren Spotify-Connect Geräten. Sprich dieser Web-Player kann somit auch unabhängig von der MoodSpotter-Funktionalität verwendet und so beispielsweise über die Spotify Mobile-App gesteuert werden.
+
+<p align="center">
+  <img src="images/spotify_connect.PNG" width="25%"/>
 </p>
 
 
 #### Zusammenfassung und Ausblick
-//TODO
+Zusammengefasst ist eins der Projektanforderungen genügendes Produkt entstanden, dass nun an verschiedenen Orten installiert werden könnte um die Musikfindung für spezifische Situationen zu erleichtern.
+
+Das entstandene Produkt 'MoodSpotter' hat durchaus Potential zur Weiterentwicklung. Als Beispiel können die algoritmische Berechnung zur Ermittlung der Lieder oder eine umfangreichere Web-UI genannt werden. Im Hinblick darauf müssten aber auch noch die APIs von MS Cognitive Services und Spotify mit mehr Funktionalität ausgebaut werden. 
