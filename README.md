@@ -239,6 +239,7 @@ function initPlayer() {
 
 
 #### Abspielen des Songs (Informationen zum Song)
+Das Abspielen eines bestimmten Songs wird ebenfalls in eine eigene JavaScript-Funktion ausgelagert (*playSongInternal*). Der Funktion wird die vorher ausgelesene Device-ID, ein Access-Token zur Authentifizierung und die Spotify-URI des zu spielenden Lieds mitgegeben. Die übergebenen Parameter werden in folgenden REST-Call verpackt:
 
 ```javascript
 function playSongInternal(device_id, _token, trackUri) {
@@ -250,7 +251,15 @@ function playSongInternal(device_id, _token, trackUri) {
     success: function (data) {
     }
   });
+  
+//for external call
+function playSong(uri) {
+  playSongInternal(moodSpotterDevicdId, token, uri);
+}
 ```
+Zur einfacheren Verwendung von Angular aus wird zusätzlich die Funktion *playSong* definiert, welcher nur der nächste zu spielende Track übergeben wird.
+
+Um nun zusätzliche Informationen zum aktuell gespielten Lied zu bekommen, kann das über den Player-Callback *player_state_changed* erhaltene Objekt geparst und auf folgende Komponenten abgefragt werden:
 
 ```javascript
 function parseTrack(uri) {
@@ -261,17 +270,21 @@ function parseTrack(uri) {
   }
 }
 ```
-
+Die einzelnen Eigenschaften (Name, Artist und Album-Bild) werden zwischengespeichert, woraufhin die Angular-App diese über Funktionen wie *getTrackName* oder *getArtist* abfragen kann.
 
 #### Player-Component (Java-Script Calls und REST-Kommunikation)
-
+Um die im Script definierten Funktionen in Angular verwenden zu können, müssen diese folgendermaßen deklariert werden:
 ```typescript
 //declare functions from javaScript "player.js"
 declare function initPlayer()
 declare function playSong(uri);
 ```
 
+Die Hauptfunktionalität der Player-Component besteht darin, das nächste zu spielende Lied vom Microservice 'MoodSpotterOnline' zu holen. Dazu wird das HTTPClient-Modul verwedet, um einen REST-Call an den Service zu senden. Die erhaltene Response wird in der  Datenkomponente *currSong* gespeichert. Anschließend wir die darin enthaltene Spotify-URI an die vorher definierte JavaScript-Funktion *playSong* übergeben. Daraufhin wird das Lied abgespielt. Ebenso werden die ensprechenden Informationen zu diesen Lied geholt und zwischengespeichert, um diese im Frontend anzeigen zu können.
+
 ```typescript
+apiEndpoint = "http://localhost:8082/api/song"
+
 getSong() {
     this.http.get(this.apiEndpoint)
       .subscribe(response => {
@@ -286,9 +299,6 @@ getSong() {
         (async () => {
           await this.delay(400);
           this.currSongName = getTrackName();
-
-          console.log("Playing" + this.currSongName);
-
           this.currArtist = getArtist();
           this.currAlbumImg = getAlbumImg();
         })();
