@@ -501,6 +501,6 @@ Wie bereits erwähnt, ist dieser Player einem konkreten Spotify-Nutzer zugeordne
 
 
 #### Zusammenfassung und Ausblick
-Zusammengefasst ist eins der Projektanforderungen genügendes Produkt entstanden, dass nun an verschiedenen Orten installiert werden könnte um die Musikfindung für spezifische Situationen zu erleichtern.
+Zusammengefasst ist ein der Projektanforderungen genügendes Produkt entstanden, dass nun an verschiedenen Orten installiert werden könnte um die Musikfindung für spezifische Situationen zu erleichtern.
 
 Das entstandene Produkt 'MoodSpotter' hat durchaus Potential zur Weiterentwicklung. Als Beispiel können die algoritmische Berechnung zur Ermittlung der Lieder oder eine umfangreichere Web-UI genannt werden. Im Hinblick darauf müssten aber auch noch die APIs von MS Cognitive Services und Spotify mit mehr Funktionalität ausgebaut werden. 
