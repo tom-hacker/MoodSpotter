@@ -466,17 +466,24 @@ Wie die UI für den Benutzer aussieht, wird im nächsten Abschnitt *Ergebnisse* 
 In diesem Abschnitt wird näher auf die erhalten Ergebnisse der einzelnen Komponenten (Raspberry Pi und den Web-Player) eingegangen um das korrekte Verhalten darzustellen.
 
 #### Raspberry Pi
-//TODO
-Die Face-API der Microsoft Cognitive Services dient zum Erkennen von Gesichtern in Bildern. Neben allgemeneinen Informationen zum Gesicht, beispielsweise den Abständen zu Gesichtsmerkmalen, können auch kompliziertere Informationen ermittelt werden. Möglich sind beispielsweise das Geschlecht, ungefähre Alter, getragene Accessoires, von der Person getragenes Make-Up, bis zur Stimmung der Person.
-
-* sadness
+Sobald der Raspberry Pi angesteckt wird, startet MoodSpotter. Er nimmt erfolgreich Fotos auf, diese werden von den Microsoft Cognitive Services ausgewertet.
+Diese Werte werden in Lied-Metriken umgerechnet, welche die Spotify API zum wählen passender Lieder nutzt. Die gefundenen Lieder werden daraufhin an RabbitMQ weitergegeben.
+Anhand der Debugging Ausgabe lässt sich nachvollziehen, wie das ermitteln der Lieder abläuft.
 
 <p align="center">
   <img src="images/sadSongs.PNG" width="85%"/>
 </p>
 
-Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur Stimmung der Person wichtig. Sie wird in sieben wichtige Stimmungen eingeteilt, zurückgegeben werden Prozentewerte, die insgesamt die Stimmung beschreiben.
-Spotify bietet viele verschiedene Endpoints zur Nutzung seiner Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
+Aufgrund des hohen *Sadness* Wertes werden Lieder mit hoher Instrumentalness, und niedrigem Energiewert gesucht. Zusätzlich wird auch die Tanzbarkeit des Liedes niedrig angesetzt.
+Das Seed-Lied hatte in diesem Fall die ID *0BfVKJALJjpzNYIQiEgF2G*, dabei handelt es sich um das Lied Waves von Dean Lewis.
+Die dafür gefundenen Lieder wirken alle etwas traurig, was genau das von uns gewünschte Ergebnis war, hier zwei Beispiele:
+
+Radioactive
+https://open.spotify.com/track/4Y2yIyaoo0q7cM4OfVc9e2?si=2TVeNAGCRDWiTgPK4m3Gpw
+
+Can't feel my face
+https://open.spotify.com/track/5zwNJ8meHAvLwHsQ1QCrZD?si=Xle2wrCfQlORd9UxPEB4YQ
+
 
 #### Web-Player
 Das Ergebnis des 'MoodSpotter-Player' kann durch eine funktionierende Web-Oberfläche mit Spotify-Integration dargestellt werden. Wird der Player gestartet oder es können keine weiteren Lieder mehr abgespielt werden, da eventuell das Kameramodul nicht richtig ausgerichtet ist, und somit der Raspberry Pi keine Gesichter erkennen kann, ist für die/den BenutzerIn folgende Web-Oberfälche zu sehen:
