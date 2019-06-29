@@ -57,14 +57,50 @@ def main_loop():
         camera.take_photo()
 ```
 
+Da für den Zugriff auf die externen APIs viele gleichbleibende Einstellungen vorzunehmen sind (beispielsweise URLs, Headers, usw.), wurden diese auf Konfigurationsdateien ausgelagert.
+In der Datei Config.py befinden sich die allgemeinen Einstellungen. In der zusätzlichen Datei SecretConfig.py befinden sich die API-Passwörter. Diese Datei wird mittels .gitignore vom Upload auf Github ausgeschlossen.
 
 #### Kameramodul
-Beschreibung und Code
+Als Bibliothek zum Ansprechen der Raspberry Pi Kamera wurde PiCamera verwendet https://picamera.readthedocs.io/
+Die Methoden zum aufnehmen und zum Laden der Fotos wurden in der Datei *MoodCamera.py* implementiert.
+Das Aufnehmen von Fotos ist mit sehr wenigen Zeilen Code möglich. 
+```python
+def take_photo(self):
+    if not os.path.exists(self.directory):
+        os.makedirs(self.directory)
+    try:
+        self.camera.start_preview()
+        sleep(5)
+        self.camera.capture(self.directory + self.imgName)
+        self.camera.stop_preview()
+        return True
+    except PiCameraError:
+        print("There is no camera installed!")
+        return False
+```
+
+Da das Bild im Dateisystem gespeichert wird, ist zusätzlich eine Methode zum Laden des Bildes nötig. Auch hierfür wird nicht viel Code benötigt.
+```python
+def get_image_bytes(self):
+    if not os.path.exists(self.directory + self.imgName):
+        return False
+    img = open(self.directory + self.imgName, "rb")
+    f = img.read()
+    img.close()
+    return f
+```
+
+Zum Start des Programms wird zunächst die Kamera in der Methode *init_camera()* initalisiert. Ist sie fertig initialisiert wird außerdem sofort ein Foto aufgenommen, damit etwaige Probleme der Kamera sofort zu einem Fehlerfall führen.
+ 
+
+
 
 #### Microsoft Cognitive Services
+https://azure.microsoft.com/en-us/services/cognitive-services/face/
+
 Die Face-API der Microsoft Cognitive Services dient zum Erkennen von Gesichtern in Bildern. Neben allgemeneinen Informationen zum Gesicht, beispielsweise den Abständen zu Gesichtsmerkmalen, können auch kompliziertere Informationen ermittelt werden. Möglich sind beispielsweise das Geschlecht, ungefähre Alter, getragene Accessoires, von der Person getragenes Make-Up, bis zur Stimmung der Person.
 
-Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur Stimmung der Person wichtig. Jene wird in sieben wichtige Stimmungen eingeteilt, zurückgegeben werden Prozentewerte, die insgesamt die Stimmung beschreiben.
+Für MoodSpotter relevant sind insbesonders die ermittelten Informationen zur Stimmung der Person. Jene wird in sieben wichtige Stimmungen eingeteilt, zurückgegeben werden Prozentewerte, die insgesamt die Stimmung beschreiben.
 
 Folgende Werte werden dabei ermittelt:
 * anger
@@ -75,27 +111,139 @@ Folgende Werte werden dabei ermittelt:
 * neutral
 * sadness
 
-//TODO: Links, example query and response
 
+<p align="center">
+  <img src="images/angryPerson.JPG" width="80%"/>
+</p>
+Für dieses Beispielbild sieht man in der Response, dass die Stimmung der Person richtig auf *Angry* eingeschätzt wird.
+
+<pre>
+ [
+  {
+    "faceId": "671edefc-7b1f-475d-b5a9-ace93925af57",
+    "faceRectangle": {
+      "top": 156,
+      "left": 323,
+      "width": 211,
+      "height": 211
+    },
+    "faceAttributes": {
+      "hair": {
+        "bald": 0.03,
+        "invisible": false,
+        "hairColor": [
+          {
+            "color": "brown",
+            "confidence": 0.99
+          },
+          {
+            "color": "red",
+            "confidence": 0.54
+          },
+          [...]
+        ]
+      },
+      [...]
+      "emotion": {
+        <b>"anger": 1.0,</b>
+        "contempt": 0.0,
+        "disgust": 0.0,
+        "fear": 0.0,
+        "happiness": 0.0,
+        "neutral": 0.0,
+        "sadness": 0.0,
+        "surprise": 0.0
+      },
+      [...]
+    }
+  }
+]
+</pre>
+
+
+
+In MoodSpotter wird die API in der Klasse MoodDetector angesprochen. Der Zugriff geschieht über REST, dafür wird die *Requests* Bibliothek verwendet. Die erhaltenen Daten werden daraufhin als Objekt zwischengespeichert.
+```java
+r = requests.post(ms_cognitive_url,
+                  params=ms_cognitive_params,
+                  headers=ms_cognitive_headers_byteimg,
+                  data=byteImage)
+faces = json.loads(r.text, object_hook=lambda d: Namespace(**d))
+
+```
+
+
+Daraufhin werden die von der API gelieferten aller Gesichter zusammengefasst und intern gespeichert. Um Fehler durch einen momentan anderen Gesichtsausdruck zu vermeiden, bleiben die zuvor erhaltenen Werte erhalten, werden jedoch in ihrer Wichtigkeit um die Hälfte reduziert.
+Hierfür ist die Klasse *FaceMood* zuständig.
 
 
 #### Spotify-API
+https://developer.spotify.com/documentation/web-api/
 Spotify bietet viele verschiedene Endpoints zur Nutzung der angebotenen Services, sowie zum Abfragen des von Spotify gebotenen Inhalts.
 Möglich sind unter anderem Abfragen zu Liedern, Alben, Interpreten oder auch Nutzern. Auch das externe Steuern von mit Spotify verbundenen Geräten ist möglich. 
 Die Authorisierung erfolgt mittels OAuth2. Jedoch können einige Endpoints auch ohne Login genutzt werden.
 
-MoodSpotter nutzt den Browse-Endpoint der API. Dieser ermittelt anhand von Seed-Liedern dazu passende weitere Tracks. Zusätzlich können unterschiedliche Lied-Metriken angegeben werden, welche die erwarteten Ergebnisse in eine Richtung leiten oder einschränken sollen.
+MoodSpotter nutzt den Browse/Recommendations-Endpoint der API. Dieser ermittelt anhand von Seed-Liedern dazu passende weitere Tracks. Zusätzlich können unterschiedliche Lied-Metriken angegeben werden, welche die erwarteten Ergebnisse in eine Richtung leiten oder einschränken sollen.
+Weitere Dokumentation findet sich unter https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/
 
-//TODO?
-* target_speed:
-* target
+Die verwendeten Seeds, sowie die Ziel-Metriken werden von der Klasse FaceMood ermittelt.
+So wird, falls eine Stimmung über 25% ist, für sie ein zufälliger passender Seed ausgewählt. Außerdem werden dann aufgrund des Prozentsatzes die Lied-Metriken errechnet, als Beispiel die Logik für die Stimmung *Happiness*.
+Initial sind alle Werte auf 100% gesetzt. Passende Lied-Metriken werden mit der Stimmung multipliziert, unpassende mit dem invertierten Wert der Stimmung multipliziert (werden also verringert).
+
+```python
+if self.happiness > .25:        #play positive, happy songs
+    seed = random.choice(spotify_happy_seeds)
+    target_values['seed_tracks'].append(seed)
+    target_values['target_energy'] *= max(self.happiness, self.anger)
+    target_values['target_danceability'] *= self.happiness
+    target_values['target_liveness'] *= self.happiness
+    target_values['target_valence'] *= self.happiness
+    target_values['target_instrumentalness'] *= 1 - self.happiness
+```
 
 Als Antwort liefert Spotify eine durch einen Parameter festgelegte Menge an Liedern (oder weniger, bei restriktiven Abfragen).
 Die Informationen zu den Liedern enthalten unter anderem den Name des Liedes, Name des Albums, Interpreten und einen Link zum Starten des Liedes in der eigenen Spotify-Weboberfläche (https://open.spotify.com). Für MoodSpotter ist besonders die übermittelte eindeutige URI wichtig, anhand ihrer kann jede andere Anwendung dieses Lied abfragen und daraufhin abspielen.
+Hier ein Teil der Response, jedoch ohne die sehr ausführlichen Informationen zu Album und Interpreten.
+
+```json
+{
+  "disc_number" : 1,
+  "duration_ms" : 199133,
+  "explicit" : false,
+  "external_urls" : {
+    "spotify" : "https://open.spotify.com/track/1TKYPzH66GwsqyJFKFkBHQ"
+  },
+  "href" : "https://api.spotify.com/v1/tracks/1TKYPzH66GwsqyJFKFkBHQ",
+  "id" : "1TKYPzH66GwsqyJFKFkBHQ",
+  "is_playable" : true,
+  "name" : "Music Is Life",
+  "preview_url" : "https://p.scdn.co/mp3-preview/546099103387186dfe16743a33edd77e52cec738",
+  "track_number" : 1,
+  "type" : "track",
+  "uri" : "spotify:track:1TKYPzH66GwsqyJFKFkBHQ"
+}
+```
 
 
 #### RabbitMQ
-//TODO: Publishen der Message, URI wird gesendet - Code
+Die Ids der gewählten Lieder werden an RabbitMQ geschickt. Mehr Informationen finden sich im nächsten Abschnitt, hier geht es lediglich um die Anbindung am Raspberry Pi.
+Der Zugriff am Raspberry Pi, wiederum in der Klasse SpotifyConnector, genutzt wird dazu die Bibliothek Pika. https://pika.readthedocs.io/en/stable/
+Zunächst werden Exchange und Queue definiert, eine direkte Exchange, die alle Nachrichten mit dem passenden Routing Key an die Queue *songs* weiterleitet.
+
+```python
+def send_to_rabbit(self, uri):
+    try:
+        connection = pika.BlockingConnection(pika.URLParameters(rabbitMq_url))
+        channel = connection.channel()
+        channel.exchange_declare(exchange='songExchange', exchange_type='direct')
+        channel.queue_declare(queue='songs')
+        channel.queue_bind(exchange='songExchange', queue='songs')
+        channel.basic_publish(exchange='songExchange', routing_key='songs', body=uri)
+        connection.close()
+        print("sent song to rabbit")
+    except ConnectionError:
+        print("error connecting to rabbitMQ")
+```
 
 
 ### RabbitMQ Message-Broker
