@@ -30,7 +30,7 @@ class MoodDetector:
                 for face in faces:
                     evaluate_face(face, self.currentMood)
                 self.currentMood.divide_all_by(len(faces))
-                print(self.currentMood)
+                #print(self.currentMood)
                 return True
             elif r.status_code == 200:
                 print("No faces found")
@@ -40,8 +40,8 @@ class MoodDetector:
                 return False
 
         except ConnectionError:
-            # TODO connection didn't work
             print("connection error")
+            return False
 
 
 def evaluate_face(face, currentMood):

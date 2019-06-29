@@ -1,4 +1,15 @@
-<p>player works!</p>
+<button class="ui button" value="Play next Song" (click)="getSong()" style="margin-bottom: 25px; margin-top: 10px;">Play
+    next Song!</button>
 
-<input type="button" value="test" onclick="testRabbitMQ()">
 
+<div style="background-color: white; border-radius: 20px; margin-left: auto; margin-right: auto; width: fit-content; 
+            padding: 10px;">
+    <h4 *ngIf="currSong == null">Derzeit können keine Lieder abgespielt werden, achten Sie auf eine korrekte
+        Kameraausrichtung <br /> klicken Sie erneut 'Play next Song!'</h4>
+
+    <div *ngIf="currSong != null">
+        <h3>{{currSongName}}</h3>
+        <p>{{currArtist}}</p>
+        <img src="{{currAlbumImg}}">
+    </div>
+</div>
